@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace RPBM
+namespace IBD_Benchmark
 {
     class Loader
     {
@@ -16,7 +16,7 @@ namespace RPBM
         /// 10000000              00  10000000
         /// 100,000,000,010,000,000
         /// </summary>
-        public enum dataType { GroudTruth, RaPID, Ger2, HapIBD, TPBWT,iLash,FastSMC };
+        public enum dataType { GroudTruth, RaPID, Ger2, HapIBD, TPBWT, iLash, FastSMC };
         public class LoaderConfig
         {
             public int ID1_idx = 0;
@@ -60,9 +60,10 @@ namespace RPBM
                         //0    1      2                3         4  5  6   7
                         //^^^^^old format^^^^^
                         //vvvvvnew formatvvvvv
+                        //0,1,         2    3      4     5   6              7   8            9      10     11
                         //,chromosome,end,end_bp,end_cm,id1,id1_haplotype,id2,id2_haplotype,start,start_bp,start_cm
                         //0,20,785,1858299,5.07728238109226,835,0,2746,1,0,565687,2.8046106882790003e-07
-                        //0,1, 2    3      4                 5  6  7   8 9 10     11
+
                         ID1_idx = 5;
                         ID2_idx = 7;
                         Hap1_idx = 6;
@@ -145,7 +146,7 @@ namespace RPBM
             /// (1000000+ID1)x10_hap1_00_(1000000+ID2)x10_hap2
             /// 100,000,00              00  10000000
             /// 100,000,000,010,000,000
-            LoaderConfig cfg= new LoaderConfig(inType);
+            LoaderConfig cfg = new LoaderConfig(inType);
 
             if (parts[cfg.ID1_idx].StartsWith("A"))
             {
@@ -171,7 +172,7 @@ namespace RPBM
                     break;
 
                 case dataType.iLash:
-                //0	2700_1	0	3998_0	20	52477650	56479537	.	.	5.01981	1
+                    //0	2700_1	0	3998_0	20	52477650	56479537	.	.	5.01981	1
 
                     ID1 = Convert.ToInt32(parts[1].Split('_')[0]);
                     hap1 = Convert.ToInt32(parts[1].Split('_')[1]);
@@ -201,9 +202,9 @@ namespace RPBM
                     ID2 = Convert.ToInt32(parts[4]);
                     hap1 = Convert.ToInt32(parts[2]) - 1;
                     hap2 = Convert.ToInt32(parts[5]) - 1;
-                    break;       
+                    break;
                 default:
-                    //format of GroundTruth and RaPID
+                    //format of GroundTruth TPBWT and RaPID
                     //case dataType.GroudTruth:
                     //#individual_1_id,individual_1_haplotype_id,individual_2_id,individual_2_haplotype_id,chromosome_id,true_ibd_physical_position_start,true_ibd_physical_position_end,genetic_length
                     //3985,1,3819,0,20,62062477,62948300,1.608621429017873
@@ -226,9 +227,9 @@ namespace RPBM
                 hap2 = hap1;
                 hap1 = tem;
             }
-            long high=(ID_Key_Pad_Num+ID1)*10+hap1;
-            long low=(ID_Key_Pad_Num+ID2)*10+hap2;
-            return high * 10000000000 + low;
+            long high = (ID_Key_Pad_Num + ID1) * 10 + hap1;
+            long low = (ID_Key_Pad_Num + ID2) * 10 + hap2;
+            return high * ID_Key_Pad_Num * 10000 + low;
 
         }
 
@@ -243,7 +244,7 @@ namespace RPBM
                 Start = startPhy;
                 End = endPhy;
             }
-            public IBD_Phy_Start_End(string[] parts,LoaderConfig cfg,dataType inType)
+            public IBD_Phy_Start_End(string[] parts, LoaderConfig cfg, dataType inType)
             {
                 //ger
                 //0 52	0 189	21	1733 5016422	. .	6279	5.01	MB	0	1	1
@@ -262,15 +263,15 @@ namespace RPBM
 
         }
 
-        public static Dictionary<long, List<IBD_Phy_Start_End>> Load_IBD(dataType inType, string path,double minLen=0)
+        public static Dictionary<long, List<IBD_Phy_Start_End>> Load_IBD(dataType inType, string path, double minLen = 0)
         {
             Dictionary<long, List<IBD_Phy_Start_End>> holder = new Dictionary<long, List<IBD_Phy_Start_End>>();
             LoaderConfig cfg = new LoaderConfig(inType);
             string line;
             string[] parts;
-            utl.filePercentageProgress prog = new utl.filePercentageProgress(path, 10);
+
             StreamReader sr = new StreamReader(path);
-            
+
             if (cfg.SkipFirstRow == true)
             {
                 line = sr.ReadLine();
@@ -280,7 +281,7 @@ namespace RPBM
             double minLenREP = 0;
             while ((line = sr.ReadLine()) != null)
             {
-                prog.AddLine(line);
+
                 parts = line.Split(cfg.Delimiter);
                 if (inType == dataType.TPBWT)
                 {
@@ -288,7 +289,7 @@ namespace RPBM
                 }
                 else
                 {
-                    minLenREP=Convert.ToDouble(parts[cfg.Len_idx]);
+                    minLenREP = Convert.ToDouble(parts[cfg.Len_idx]);
                 }
 
                 if (minLen != 0 && minLenREP < minLen)
@@ -309,7 +310,7 @@ namespace RPBM
                 }
             }
             sr.Close();
-            Console.WriteLine("Read Completed. Error Cnt: " + errorCnt + "/"+prog.rowCnt+"\t" + path);
+
             return holder;
         }
     }
