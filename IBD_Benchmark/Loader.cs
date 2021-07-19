@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace IBD_Benchmark
+namespace RPBM
 {
-    class Loader:Program
+    class Loader
     {
         public static int ID_Key_Pad_Num = 1000000;
         /// <summary>
@@ -16,7 +16,7 @@ namespace IBD_Benchmark
         /// 10000000              00  10000000
         /// 100,000,000,010,000,000
         /// </summary>
-        public enum dataType { GroudTruth, RaPID, Ger2, HapIBD, TPBWT, iLash, FastSMC };
+        public enum dataType { GroudTruth, RaPID, Ger2, HapIBD, TPBWT,iLash,FastSMC };
         public class LoaderConfig
         {
             public int ID1_idx = 0;
@@ -25,7 +25,7 @@ namespace IBD_Benchmark
             public int Hap2_idx = 0;
             public int PhyStart_idx = 0;
             public int PhyEnd_idx = 0;
-            public int Len_idx = 0;
+            public int Len_idx = -1;
             public bool SkipFirstRow = false;
             public char Delimiter = '\t';
             public LoaderConfig(dataType inType)
@@ -58,14 +58,19 @@ namespace IBD_Benchmark
                     case dataType.TPBWT:
                         //21 20407 15508510 5.0415359279141105 1181 0 2873 0 0 1733 0.0
                         //0    1      2                3         4  5  6   7
-                        ID1_idx = 4;
-                        ID2_idx = 6;
-                        Hap1_idx = 5;
-                        Hap2_idx = 7;
-                        PhyStart_idx = 1;
-                        PhyEnd_idx = 2;
-                        Len_idx = 3;
-                        Delimiter = ' ';
+                        //^^^^^old format^^^^^
+                        //vvvvvnew formatvvvvv
+                        //,chromosome,end,end_bp,end_cm,id1,id1_haplotype,id2,id2_haplotype,start,start_bp,start_cm
+                        //0,20,785,1858299,5.07728238109226,835,0,2746,1,0,565687,2.8046106882790003e-07
+                        //0,1, 2    3      4                 5  6  7   8 9 10     11
+                        ID1_idx = 5;
+                        ID2_idx = 7;
+                        Hap1_idx = 6;
+                        Hap2_idx = 8;
+                        PhyStart_idx = 10;
+                        PhyEnd_idx = 3;
+                        Delimiter = ',';
+                        SkipFirstRow = true;
                         break;
                     case dataType.HapIBD:
                         //1402	2	2583	2	21	774646	15379203	10.154
@@ -131,25 +136,17 @@ namespace IBD_Benchmark
             }
         }
 
-        /// <summary>
-        /// make a ID pair(haplotype) in to an unique long key.
-        /// </summary>
-        /// <param name="inType"></param>
-        /// <param name="parts"></param>
-        /// <returns></returns>
         public static long MakeLongKey(dataType inType, string[] parts)
         {
 
+            //now all set have A0 ID
 
             /// ID padding: 976	3285	1	0//ID1 ID2 hap1 hap2
             /// (1000000+ID1)x10_hap1_00_(1000000+ID2)x10_hap2
             /// 100,000,00              00  10000000
             /// 100,000,000,010,000,000
-            LoaderConfig cfg = new LoaderConfig(inType);
+            LoaderConfig cfg= new LoaderConfig(inType);
 
-            //due to some software does not allow 0 as individual ID, I change all 0 to A0
-            //then later I remove 'A' from "A0" to match it back to ID '0' in ground truth
-            //now all set have A0 ID
             if (parts[cfg.ID1_idx].StartsWith("A"))
             {
                 parts[cfg.ID1_idx] = parts[cfg.ID1_idx].Substring(1);
@@ -160,7 +157,7 @@ namespace IBD_Benchmark
                 parts[cfg.ID2_idx] = parts[cfg.ID2_idx].Substring(1);
             }
 
-
+            int tem1 = 0, tem2 = 0;
             int ID1 = 0, ID2 = 0, hap1 = 0, hap2 = 0;
             switch (inType)
             {
@@ -174,7 +171,7 @@ namespace IBD_Benchmark
                     break;
 
                 case dataType.iLash:
-                    //0	2700_1	0	3998_0	20	52477650	56479537	.	.	5.01981	1
+                //0	2700_1	0	3998_0	20	52477650	56479537	.	.	5.01981	1
 
                     ID1 = Convert.ToInt32(parts[1].Split('_')[0]);
                     hap1 = Convert.ToInt32(parts[1].Split('_')[1]);
@@ -204,7 +201,7 @@ namespace IBD_Benchmark
                     ID2 = Convert.ToInt32(parts[4]);
                     hap1 = Convert.ToInt32(parts[2]) - 1;
                     hap2 = Convert.ToInt32(parts[5]) - 1;
-                    break;
+                    break;       
                 default:
                     //format of GroundTruth and RaPID
                     //case dataType.GroudTruth:
@@ -229,10 +226,10 @@ namespace IBD_Benchmark
                 hap2 = hap1;
                 hap1 = tem;
             }
-            long high = (ID_Key_Pad_Num + ID1) * 10 + hap1;
-            long low = (ID_Key_Pad_Num + ID2) * 10 + hap2;
-            return high * ID_Key_Pad_Num * 10000 + low;
-                          
+            long high=(ID_Key_Pad_Num+ID1)*10+hap1;
+            long low=(ID_Key_Pad_Num+ID2)*10+hap2;
+            return high * 10000000000 + low;
+
         }
 
         public class IBD_Phy_Start_End
@@ -246,7 +243,7 @@ namespace IBD_Benchmark
                 Start = startPhy;
                 End = endPhy;
             }
-            public IBD_Phy_Start_End(string[] parts, LoaderConfig cfg, dataType inType)
+            public IBD_Phy_Start_End(string[] parts,LoaderConfig cfg,dataType inType)
             {
                 //ger
                 //0 52	0 189	21	1733 5016422	. .	6279	5.01	MB	0	1	1
@@ -265,26 +262,36 @@ namespace IBD_Benchmark
 
         }
 
-        public static Dictionary<long, List<IBD_Phy_Start_End>> Load_IBD(dataType inType, string path, double minLen = 0)
+        public static Dictionary<long, List<IBD_Phy_Start_End>> Load_IBD(dataType inType, string path,double minLen=0)
         {
             Dictionary<long, List<IBD_Phy_Start_End>> holder = new Dictionary<long, List<IBD_Phy_Start_End>>();
             LoaderConfig cfg = new LoaderConfig(inType);
             string line;
             string[] parts;
-    
+            utl.filePercentageProgress prog = new utl.filePercentageProgress(path, 10);
             StreamReader sr = new StreamReader(path);
-
+            
             if (cfg.SkipFirstRow == true)
             {
                 line = sr.ReadLine();
             }
             int errorCnt = 0;
             long key;
+            double minLenREP = 0;
             while ((line = sr.ReadLine()) != null)
             {
-  
+                prog.AddLine(line);
                 parts = line.Split(cfg.Delimiter);
-                if (minLen != 0 && Convert.ToDouble(parts[cfg.Len_idx]) < minLen)
+                if (inType == dataType.TPBWT)
+                {
+                    minLenREP = Convert.ToDouble(parts[4]) - Convert.ToDouble(parts[11]);
+                }
+                else
+                {
+                    minLenREP=Convert.ToDouble(parts[cfg.Len_idx]);
+                }
+
+                if (minLen != 0 && minLenREP < minLen)
                 { continue; }
                 try
                 {
@@ -302,7 +309,7 @@ namespace IBD_Benchmark
                 }
             }
             sr.Close();
-            Console.WriteLine("Read Completed. " + path + " Error Cnt: " + errorCnt + "\t" + path);
+            Console.WriteLine("Read Completed. Error Cnt: " + errorCnt + "/"+prog.rowCnt+"\t" + path);
             return holder;
         }
     }
