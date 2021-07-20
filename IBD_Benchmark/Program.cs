@@ -30,7 +30,9 @@ namespace IBD_Benchmark
 
             GT_Path = "our ground truth path here";
             vcfPath = "input vcf path for IBD software";
-
+            gMap_Path = "your genetic map path here";
+            //currently 1st (0 based) column is the physical locations 4th column is the genetic rates
+            //you can change column indexs in the utl.GenMapV3 function in singleRun
             singleRun("result of IBD software you want to check", GT_Path, 5, Loader.dataType.RaPID, vcfPath);
         }
 
