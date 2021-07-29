@@ -1,3 +1,8 @@
+/*
+Author: Kecong Tang(Benny)
+Loading unit, contains parsing methods for ground truth files and result files from IBD tools.
+Parser could to be modified for different formats.
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
