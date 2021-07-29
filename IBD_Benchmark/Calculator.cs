@@ -1,4 +1,8 @@
-﻿using System;
+/*
+Author: Kecong Tang(Benny)
+Calculation module, contains methods for accuracy and power.
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
