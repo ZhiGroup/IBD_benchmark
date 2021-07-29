@@ -1,4 +1,10 @@
-﻿using System;
+/*
+Author: Kecong Tang(Benny)
+Program entrance, for clear demonstration, only a single example is provied.
+Judging each test of IBD results could be running in parallel to save time.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +22,6 @@ namespace IBD_Benchmark
         public static string vcfPath = "";
         public static string gMap_Path = "";
         public static string GT_Path = "";
-
-        public static string RP_Path = "";
-        public static string HI_Path = "";
-        public static string TP_Path = "";
-        public static string IL_Path = "";
-        public static string FS_Path = "";
 
         public static double IBD_LenTHD = 0;
         public static string log_Path = "";
