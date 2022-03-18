@@ -1,4 +1,4 @@
-# Create VCF panel with genotyping error upon givn original VCF file and genotype errors.
+# Create VCF panel with genotyping error upon givn original VCF file and error rates.
 
 The program creates an random error location table by the highest error rate in the list, then takes less amount of error from the error table according to the error rate.
 
