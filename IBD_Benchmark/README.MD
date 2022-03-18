@@ -12,7 +12,7 @@ Utl.cs             Supporting utility module.
 
 Compiling and Execution
 
-Precompiled versions for ubuntu 18, ubuntu 21 and windows 10 are already uploaded to directory ```/IBD_Benchmark_ExperiencePackage/```. However if those version do not work for you, you can compile the source code. As following:
+Precompiled versions for ubuntu 18, ubuntu 21 and windows 10 are already uploaded to directory ```/IBD_Benchmark_ExperiencePackage/```. However if none of those version work, you can compile the source code. As following:
 
 For windows:
 
