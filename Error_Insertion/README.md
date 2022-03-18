@@ -1,12 +1,10 @@
-Introduce genotyping error and phasing error to genotype data file(VCF) for benchmarking purpose.
+# Introduce genotyping error and phasing error to genotype data file(VCF) for benchmarking purpose.
 
 
-Genotyping Error Adding Module:
+## Genotyping Error Adding Module:
+```/IBD_benchmark/Error_Insertion/Genotyping_Error/```
 
------To Be Uploaded Soon-----
 
-
-Phasing Errorr Adding Module:
-
------To Be Uploaded Soon-----
+## Phasing Errorr Adding Module:
+```/IBD_benchmark/Error_Insertion/Phasing_Error/```
 
