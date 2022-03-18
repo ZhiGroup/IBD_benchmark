@@ -1,8 +1,8 @@
 # Create VCF panel with genotyping error upon givn original VCF file and genotype errors.
 
-The given error represents the total error rate in a diplotype, E.g. if 0.001 is given, then the error rate for a haplotye is 0.0005.
+The program creates an random error location table by the highest error rate in the list, then takes less amount of error from the error table according to the error rate.
 
-The program will create an random error location table by the highest error rate in the list, then takes less amount of error from the error table according to the error rate.
+The given error represents the total error rate in a diplotype, E.g. if 0.001 is given, then the error rate for a haplotye is 0.0005.
 
 If given a list of error rate in **a single run**, the error locations in the lower error rate file(s) are always included by the higher error rate file(s).
 
