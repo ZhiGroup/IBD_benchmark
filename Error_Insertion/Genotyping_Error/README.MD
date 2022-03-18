@@ -1,4 +1,4 @@
-Create VCF panel with genotyping error upon givn original VCF file and genotype errors.
+#Create VCF panel with genotyping error upon givn original VCF file and genotype errors.
 
 Input:
 Original VCF file
