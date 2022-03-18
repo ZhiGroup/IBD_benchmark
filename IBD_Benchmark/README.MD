@@ -3,9 +3,13 @@ IBD Benchmark project source code.
 List of file:
 
 Program.cs         Program entrance, load configurations, check inputs, then run program.
+
 GroupCaller.cs     Group calling module, organized to call core functions to run a full set of test.
+
 BinCalculator.cs   Core calculation module, detailed calculation methords could be found here.
+
 Loader.cs          Loading unit, parsers could be modified here for differet formats.
+
 Utl.cs             Supporting utility module.
 
 
