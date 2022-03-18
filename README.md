@@ -1,7 +1,7 @@
 # IBD Detection Tool Benchmark Project
 
 
-This open source project benchmark most popular IBD detection tools with multiple measurements. 
+This open source project benchmarks most popular IBD detection tools with multiple measurements. 
 
 The project does:
 1. Simulate human genotype data (VCF file).
