@@ -1,4 +1,4 @@
-# Introduce genotyping error and phasing error to genotype data file(VCF) for benchmarking purpose.
+## Introduce genotyping error and phasing error to genetic data file(VCF) for benchmarking purpose.
 
 
 ## Genotyping Error Adding Module:
