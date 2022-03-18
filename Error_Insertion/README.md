@@ -7,5 +7,5 @@ Genotyping Error Adding Module:
 
 Phasing Errorr Adding Module:
 
-<<<To Be Uploaded Soon>>>
+-----To Be Uploaded Soon-----
 
