@@ -15,4 +15,4 @@ Error insertion code could be found in  ```Error_Insertion``` directory.
 
 Evaluation software code could be found in  ```IBD_Benchmark``` directory.
 
-For quick and simple demonstration precompiled executable versions and a set of test data are uploaded in ```IBD_Benchmark_ExperiencePackage``` directory.
+For quick and simple demonstration precompiled executable versions and a set of test data are uploaded to ```IBD_Benchmark_ExperiencePackage``` directory.
