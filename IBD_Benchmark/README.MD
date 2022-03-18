@@ -20,7 +20,7 @@ Precompiled versions for ubuntu 18, ubuntu 21 and windows 10 are already uploade
 
 For windows:
 
-Download code file, compile with Microsoft Visual Studio, use Release version for better performance.
+Download code files, compile with Microsoft Visual Studio, use Release version for better performance.
 
 For Linux and macOS:
 
