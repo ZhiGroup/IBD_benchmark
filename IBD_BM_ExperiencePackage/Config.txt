@@ -1,0 +1,40 @@
+####Configuration file, tab delimiter.
+
+####parallel_Load performance could be worse than single thread reading(using false) on a spinning hard drive
+####minBin minimum(first) genetic length for binning  
+####maxBin maximum(last) genetic length for binning
+####binLen length of each bin
+####phasingErrorData	running phasing error test data set
+####gMap_PositionCol_Index_ZeroBased	zero based column index of genetic map that has position info
+####gMap_MapCol_Index_ZeroBased	zero based column index of genetic map that has genetic map info
+####
+####FS_Path	path of FastSMC result
+####HI_Path	path of hapIBD result
+####IL_Path	path of iLash result
+####RP_Path	path of RaPID result
+####TP_Path	path of TPBWT result
+####gMap_Path	path of genetic map
+####vcf_Path	path of vcf file that used as the input to IBD detection software 
+####GT_Path	path of ground truth file. Note: formats could be different may need to modify parser in Loader module
+####out_Path	path of accuracy and power result.
+
+
+parallel_Load	true
+
+minBin	2
+maxBin	7
+binLen	1
+
+phasingErrorData	false
+gMap_PositionCol_Index_ZeroBased	1
+gMap_MapCol_Index_ZeroBased	3
+
+FS_Path	F_s9.arr.e0.001_2.1.1.FastSMC.ibd
+HI_Path	H_s9.arr.e0.001_2cM.ibd
+IL_Path	I_s9.arr.e0.001_2.match
+RP_Path	R_s9.arr.e0.001.vcf_2w_3.results.max
+TP_Path	T_s9.arr.e0.001.vcf_2cM.csv
+gMap_Path	genetic_map_GRCh37_chr20.txt
+vcf_Path	s9.arr.e0.001.vcf
+GT_Path	arr.gt.txt
+out_Path	IBD_BM_Result.txt
