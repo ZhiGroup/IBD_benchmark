@@ -1,10 +1,10 @@
-#Create VCF panel with genotyping error upon givn original VCF file and genotype errors.
+# Create VCF panel with genotyping error upon givn original VCF file and genotype errors.
 
-Input:
+## Input:
 Original VCF file
 A list of error rate
 
-Output:
+## Output:
 VCF file(s) with given error rate.
 
 
@@ -25,7 +25,7 @@ If given a list of error rate in **a single run**, the error locations in the lo
 Seeded based on time ticks, error locations in lower error file are **not garantied** included by higher error file, if you decided to run the generator multiple times.
 
 
-Usage:
+## Usage:
 
 Mofication:
 Simply modify the ```error rate list``` and ```input path``` in ```program.cs```
