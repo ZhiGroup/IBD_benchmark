@@ -1,7 +1,8 @@
 # IBD Detection Tool Benchmark Project
 
-
 This open source project benchmarks most popular IBD detection tools with multiple measurements. 
+
+For quick and simple demonstration precompiled executable versions and a set of test data are uploaded to ```IBD_Benchmark_ExperiencePackage``` directory.
 
 The project does:
 1. Simulate human genotype data (VCF file).
@@ -15,4 +16,4 @@ Error insertion code could be found in  ```Error_Insertion``` directory.
 
 Evaluation software code could be found in  ```IBD_Benchmark``` directory.
 
-For quick and simple demonstration precompiled executable versions and a set of test data are uploaded to ```IBD_Benchmark_ExperiencePackage``` directory.
+
