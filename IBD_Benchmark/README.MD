@@ -55,4 +55,4 @@ Detial configurations and example could be found in ```/IBD_Benchmark_Experience
 ## Output
 The result could be found in ```[reported_Path].IBD_BM_Result.txt```.
 
-```[reported_Path]``` is the IBD detection tool result path, refers to ```reported_Path``` in the configuration file.
+```[reported_Path]``` is the IBD detection tool's result path, refers to ```reported_Path``` in the configuration file.
