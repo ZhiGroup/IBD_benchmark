@@ -38,8 +38,11 @@ Note, input file paths and most configurations could be modified in ```Config.tx
 
 
 ## Input
-The program take a configuration file path as input, if the path is not given, it will try to read ```Config.txt``` in the same directory.
+This program takes a configuration file path as input, if the path is not given, it will try to read ```Config.txt``` in the same directory.
 
-After successfully located the configuration file, the program will load all paths for: Ground truth file,genetic map file, VCF file and an IBD result.
+After successfully located the configuration file, the program will load all paths and other configurations, and start generate results.
 
 Detial and example could be found in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
+
+## Output
+The result file names as [tool_Name].IBD_BM_Result.txt
