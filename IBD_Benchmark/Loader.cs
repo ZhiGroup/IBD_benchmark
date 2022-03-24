@@ -185,8 +185,6 @@ namespace IBD_BM
             }
 
 
-
-            int tem1 = 0, tem2 = 0;
             int ID1 = 0, ID2 = 0, hap1 = 0, hap2 = 0;
             switch (inType)
             {
