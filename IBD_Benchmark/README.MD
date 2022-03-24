@@ -29,8 +29,9 @@ If you have not installed mono compiler, please follow the guide in https://www.
 
 Once compiled, you may run:
 
-for linux
+for linux and windows
 ```./IBD_BM``` or ```./IBD_BM config.txt```
+
 for macOS
 ```mono IBD_BM``` or ```mono IBD_BM config.txt```
 
