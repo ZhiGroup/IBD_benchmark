@@ -31,7 +31,7 @@ Once compiled, you may run:
 ```./IBD_BM``` for linux
 ```mono IBD_BM``` for macOS
 
-Note, input file paths and most configurations could be modified in Config.txt, it may not be necessary to modify in the code.
+Note, input file paths and most configurations could be modified in ```Config.txt```, it may not be necessary to modify in the code.
 
 
 ## Inputs:
