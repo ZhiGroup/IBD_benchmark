@@ -28,13 +28,18 @@ Dowload the code files, use mono compiler ```mcs -out:IBD_BM *.cs```
 If you have not installed mono compiler, please follow the guide in https://www.mono-project.com/ to install.
 
 Once compiled, you may run:
-```./IBD_BM``` for linux
-```mono IBD_BM``` for macOS
+
+for linux
+```./IBD_BM``` or ```./IBD_BM config.txt```
+for macOS
+```mono IBD_BM``` or ```mono IBD_BM config.txt```
 
 Note, input file paths and most configurations could be modified in ```Config.txt```, it may not be necessary to modify in the code.
 
 
 ## Input
-The program will read ```Config.txt``` to load all paths for: Ground truth file,genetic map file, VCF file and IBD results(corrently for 5 tools).
+The program take a configuration file path as input, if the path is not given, it will try to read ```Config.txt``` in the same directory.
+
+After successfully located the configuration file, the program will load all paths for: Ground truth file,genetic map file, VCF file and an IBD result.
 
 Detial and example could be found in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
