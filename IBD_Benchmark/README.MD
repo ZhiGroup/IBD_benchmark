@@ -45,5 +45,6 @@ After successfully located the configuration file, the program will load all pat
 Detial configurations and example could be found in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
 
 ## Output
-The result could be found in ```[reported_Path].IBD_BM_Result.txt```
+The result could be found in ```[reported_Path].IBD_BM_Result.txt```.
+
 ```[reported_Path]``` refers to the ```IBD detection tool result_Path``` given in the configuration file.
