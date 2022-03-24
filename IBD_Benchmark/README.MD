@@ -42,7 +42,7 @@ This program takes a configuration file path as input, if the path is not given,
 
 After successfully located the configuration file, the program will load all paths and other configurations, and start generate results.
 
-Detial and example could be found in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
+Detial configurations and example could be found in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
 
 ## Output
 The result file names as [reported_Path].IBD_BM_Result.txt
