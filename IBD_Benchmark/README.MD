@@ -26,7 +26,7 @@ Precompiled versions for ubuntu 18, ubuntu 21 and windows 10 are already uploade
 
 However if none of those version work, you can compile the source code. As following:
 
-Dowload the code files, use mono compiler ```mcs -out:IBD_BM *.cs```.
+Download the code files, use mono compiler ```mcs -out:IBD_BM *.cs```.
 
 If you have not installed mono compiler, please follow the guide in https://www.mono-project.com/ to install.
 
