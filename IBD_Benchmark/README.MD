@@ -14,25 +14,28 @@ List of file:
 
 
 
-## Compiling and Execution
+## Compiling
 
-Precompiled versions for ubuntu 18, ubuntu 21 and windows 10 are already uploaded to directory ```/IBD_Benchmark_ExperiencePackage/```. However if none of those version work, you can compile the source code. As following:
-
-### For windows:
+### windows:
 
 Download code files, compile with Microsoft Visual Studio, use Release version for better performance.
 
-### For Linux and macOS:
+### Linux and macOS:
 
+Precompiled versions for ubuntu 18, ubuntu 21 and windows 10 are already uploaded to directory ```/IBD_Benchmark_ExperiencePackage/```. However if none of those version work, you can compile the source code. As following:
 Dowload the code files, use mono compiler ```mcs -out:IBD_BM *.cs```
 If you have not installed mono compiler, please follow the guide in https://www.mono-project.com/ to install.
 
-Once compiled, you may run:
-
-### for linux
+## Execution
+### windows
 ```./IBD_BM``` or ```./IBD_BM config.txt```
 
-### for macOS
+You may also execute the program by double clicking the IBD_BM.exe if ```Config.txt``` exists in the same directory.
+
+### linux
+```./IBD_BM``` or ```./IBD_BM config.txt```
+
+### macOS
 ```mono IBD_BM``` or ```mono IBD_BM config.txt```
 
 Note, input file paths and most configurations could be modified in ```Config.txt```, it may not be necessary to modify in the code.
