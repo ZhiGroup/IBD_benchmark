@@ -13,7 +13,7 @@ To Execute, run:
 
   ```IBD_BM_u18 Config.txt``` or ```IBD_BM_u18 Config.txt``` for ubuntu 18
   
-  ```IBD_BM_u21 Config.txt``` or ```IBD_BM_21 Config.txt``` for ubuntu 21
+  ```IBD_BM_u21 Config.txt``` or ```IBD_BM_u21 Config.txt``` for ubuntu 21
   
   ```IBD_BM.exe Config.txt``` or ```IBD_BM.exe Config.txt```for windows 10 tested version
   
