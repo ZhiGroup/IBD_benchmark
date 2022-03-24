@@ -11,11 +11,11 @@ Unzip all the Gzip files(.gz):
   
 To Execute, run:
 
-  ```IBD_BM_u18``` for ubuntu 18
+  ```IBD_BM_u18 Config.txt``` or ```IBD_BM_u18 Config.txt``` for ubuntu 18
   
-  ```IBD_BM_u21``` for ubuntu 21
+  ```IBD_BM_u21 Config.txt``` or ```IBD_BM_21 Config.txt``` for ubuntu 21
   
-  ```IBD_BM.exe``` for windows 10 tested version
+  ```IBD_BM.exe Config.txt``` or ```IBD_BM.exe Config.txt```for windows 10 tested version
   
 
 Results will be saved in ```IBD_BM_Result.txt``` by default.  
