@@ -5,9 +5,9 @@ Download all files in a directory.
 
 Unzip all the Gzip files(.gz):
 
-  May use command: ```gzip -d *.gz``` , if Gzip(available both in windows and Linux) is installed.
+    May use command: ```gzip -d *.gz``` , if Gzip(available both in windows and Linux) is installed.
   
-  Or anyother unzip software.
+    Or anyother unzip software.
   
 To Execute, run:
 
