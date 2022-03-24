@@ -1,4 +1,4 @@
-## IBD Benchmark project source code.
+## IBD Benchmark project source code
 
 List of file:
 
@@ -34,7 +34,7 @@ Once compiled, you may run:
 Note, input file paths and most configurations could be modified in ```Config.txt```, it may not be necessary to modify in the code.
 
 
-## Inputs:
+## Input
 The program will read ```Config.txt``` to load all paths for: Ground truth file,genetic map file, VCF file and IBD results(corrently for 5 tools).
 
 Detial and example could be found in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
