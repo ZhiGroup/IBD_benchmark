@@ -15,7 +15,7 @@ To Execute, run:
   
   ```IBD_BM_u21``` for ubuntu 21
   
-  ```IBD_BM_w10.exe``` for windows 10
+  ```IBD_BM.exe``` for windows 10 tested version
   
 
 Results will be saved in ```IBD_BM_Result.txt``` by default.  
