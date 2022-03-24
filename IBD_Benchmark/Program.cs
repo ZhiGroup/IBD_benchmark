@@ -1,7 +1,6 @@
-﻿/*
+/*
 Author: Kecong Tang(Benny)
 Program entrance, for clear demonstration, only a single example is provied.
-The defalut setting does parallel hard drive reading, may be disable by modifying Config.txt.
 */
 
 using System;
@@ -17,7 +16,7 @@ namespace IBD_BM
     class Program
     {
         #region Configurations could be modified in Config.txt
-        public static bool parallel_Load = true;
+
         public static bool parallel_Compute = true;
 
         public static bool phasingErrorData = false;
@@ -25,11 +24,10 @@ namespace IBD_BM
         public static double maxBin = 7;
         public static double binLen = 1;
 
-        public static string RP_Path = "";
-        public static string HI_Path = "";
-        public static string TP_Path = "";
-        public static string IL_Path = "";
-        public static string FS_Path = "";
+        public static string tool_Name = "";
+        public static Loader.dataType tool_Type;
+
+        public static string reported_Path = "";
         public static string gMap_Path = "";
         public static string vcf_Path = "";
         public static string GT_Path = "";
@@ -42,50 +40,45 @@ namespace IBD_BM
         
         static void Main(string[] args)
         {
-            loadConfig();
+            Console.WriteLine("IBD Benchmark Tool v1.0.");
+
+            loadConfig(args);
 
             GroupCaller.run();
 
         }
 
-        public static void loadConfig()
+        public static void loadConfig(string[] args)
         {
-      
+            if (args.Count() < 1 )
+            {
+                if (File.Exists(configFilePath) == false)
+                {
+                    Console.WriteLine("Missing Configuration File Path.");
+                    Environment.Exit(1);
+                }
+
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(args[0]) == false)
+                {
+                    configFilePath = args[0];
+                }
+                else
+                {
+                    Console.WriteLine("Missing Configuration File Path.");
+                    Environment.Exit(1);
+                }
+            }
+     
+
             Console.WriteLine("Loading "+configFilePath+" ...");
             string[] lines = File.ReadAllLines(configFilePath);
             string[] parts;
             foreach (string line in lines)
             {
                 parts = line.Split('\t');
-
-
-                if (line.StartsWith("parallel_Load"))
-                {
-                    if (parts[1].ToLower() == "true")
-                    {
-                        parallel_Load = true;
-                    }
-                    else if (parts[1].ToLower() == "false")
-                    {
-                        parallel_Load = false;
-                    }
-                    Console.WriteLine(line);
-                    continue;
-                }
-
-                if (line.StartsWith("phasingErrorData"))
-                {
-                    if (parts[1].ToLower() == "true")
-                    {
-                        phasingErrorData = true;
-                    }
-                    else if (parts[1].ToLower() == "false")
-                    {
-                        phasingErrorData = false;
-                    }
-                    Console.WriteLine(line);
-                    continue;
-                }
 
 
                 if (line.StartsWith("gMap_PositionCol_Index_ZeroBased"))
@@ -124,34 +117,49 @@ namespace IBD_BM
                 }
 
 
-                if (line.StartsWith("FS_Path"))
+                if (line.StartsWith("reported_Path"))
                 {
 
-                    FS_Path = pathCheck_Read("FS_Path", parts);
+                    reported_Path = pathCheck_Read("reported_Path", parts);
                     continue;
                 }
-                if (line.StartsWith("HI_Path"))
-                {
 
-                    HI_Path = pathCheck_Read("HI_Path", parts);
-                    continue;
-                }
-                if (line.StartsWith("IL_Path"))
+                if (line.StartsWith("tool_Name"))
                 {
+                    parts = line.Split('\t');
+                    if (parts.Count() < 2)
+                    {
+                        Console.WriteLine("tool_Name not given, please provide tool name and and make sure using Tab delimiter.");
+                        Environment.Exit(1);
+                    }
 
-                    IL_Path = pathCheck_Read("IL_Path", parts);
-                    continue;
-                }
-                if (line.StartsWith("RP_Path"))
-                {
+                    tool_Name = parts[1].Trim();
 
-                    RP_Path = pathCheck_Read("RP_Path", parts);
-                    continue;
-                }
-                if (line.StartsWith("TP_Path"))
-                {
+                    switch (tool_Name.ToLower())
+                    {
+                        case "fastsmc":
+                            tool_Type = Loader.dataType.FastSMC;
+                            break;
+                        case "hap-ibd":
+                            tool_Type = Loader.dataType.HapIBD;
+                            break;
+                        case "ilash":
+                            tool_Type = Loader.dataType.iLash;
+                            break;
+                        case "rapid":
+                            tool_Type = Loader.dataType.RaPID;
+                            break;
+                        case "tpbwt":
+                            tool_Type = Loader.dataType.TPBWT;
+                            break;
+                        default:
+                            Console.WriteLine("No Supported Tool Type["+tool_Name+"]!");
+                            Console.WriteLine("Currently supported formats: FastSMC,hap-IBD,iLash,RaPID and TPBWT, add/modify the paser in Loader.cs for more formats");
+                            Environment.Exit(1);
+                            break;
 
-                    TP_Path = pathCheck_Read("TP_Path", parts);
+                    }
+                    Console.WriteLine("IBD Tool:\t" + tool_Name);
                     continue;
                 }
 
@@ -179,6 +187,8 @@ namespace IBD_BM
             }
 
 
+            out_Path = reported_Path + ".IBD_BM_Result.txt";
+
             Console.WriteLine(configFilePath + " Loaded");
 
 
@@ -187,17 +197,6 @@ namespace IBD_BM
 
         public static string pathCheck_Read(string name,string[] parts)
         {
-            if (name == "out_Path")
-            {
-                if (parts.Count() != 2 || String.IsNullOrWhiteSpace(parts[1]))
-                {
-                    Console.WriteLine("Path Error [" + name + "]. Check path and make sure using Tab delimiter.");
-                    Console.ReadKey();
-                    Environment.Exit(1);
-                }
-                Console.WriteLine(name + ":\t" + parts[1]);
-                return parts[1];
-            }
             
 
             if (parts.Count()!=2|| File.Exists(parts[1]) == false || String.IsNullOrWhiteSpace(parts[1]))
