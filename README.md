@@ -10,7 +10,7 @@ The project does:
 3. Run IBD detection tools with the data, and collect the IBD results.
 4. Evaluate the IBD results according to ground truth by multiple metrics.
 
-Simulation code could be found in ```Simulation``` directory.
+Data simulation code could be found in ```Simulation``` directory.
 
 Error insertion code could be found in  ```Error_Insertion``` directory.
 
