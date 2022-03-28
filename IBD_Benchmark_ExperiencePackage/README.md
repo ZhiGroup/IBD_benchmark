@@ -1,4 +1,4 @@
-##IBD Benchmark Experience Package
+## IBD Benchmark Experience Package
 A quick demostration for array data with 0.1% genotyping error.
 
 Download all files in a directory.
