@@ -9,7 +9,7 @@ The command line above generates 500000 haplotypes of European ancestry. You can
 ```sh
 tskit vcf output_file | gzip --stdout  > 500k_hapmap_chr20.vcf.gz
 ```
-The sites with very low allele freuencies can be then filtered out using bcftools:
+The sites with very low allele frequencies can be then filtered out using bcftools:
 
 ```sh
 bcftools view -q 0.1:minor 500k_hapmap_chr20.vcf.gz
