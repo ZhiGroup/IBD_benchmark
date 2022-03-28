@@ -15,4 +15,9 @@ The sites with very low allele freuencies can be then filtered out using bcftool
 bcftools view -q 0.1:minor 500k_hapmap_chr20.vcf.gz
 ```
 
-[SHAPEIT4](https://odelaneau.github.io/shapeit4/) or other phasing tools can be used to phase the genotype data.
+[SHAPEIT4](https://odelaneau.github.io/shapeit4/) or other phasing tools can be used to phase the genotype data:
+
+
+```sh
+shapeit4.2 --input 500k_hapmap_chr20.vcf.gz --map chr20.HapMapII_GRCh37.gmap.gz --region 20 --output phased.vcf.gz
+```
