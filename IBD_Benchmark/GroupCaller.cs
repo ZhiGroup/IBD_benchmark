@@ -1,4 +1,4 @@
-/*
+﻿/*
 Author: Kecong Tang(Benny)
 Group calling module, organize and call core functions.
 */
@@ -20,9 +20,9 @@ namespace IBD_BM
 
 
             Dictionary<long, List<Loader.IBD_Phy_Start_End>> GT_Holder_All = new Dictionary<long, List<Loader.IBD_Phy_Start_End>>();
-            Dictionary<long, List<Loader.IBD_Phy_Start_End>> GT_Holder_gt2cM = new Dictionary<long, List<Loader.IBD_Phy_Start_End>>();
+            Dictionary<long, List<Loader.IBD_Phy_Start_End>> GT_Holder_TGT_Len = new Dictionary<long, List<Loader.IBD_Phy_Start_End>>();
 
-            Dictionary<long, List<Loader.IBD_Phy_Start_End>> Reported_Holder_gt2cM = new Dictionary<long, List<Loader.IBD_Phy_Start_End>>();
+            Dictionary<long, List<Loader.IBD_Phy_Start_End>> Reported_Holder_TGT_Len = new Dictionary<long, List<Loader.IBD_Phy_Start_End>>();
 
             utl.siteDict siteDict = null;
 
@@ -41,8 +41,8 @@ namespace IBD_BM
 
             utl.GenMapV3 gMap = new utl.GenMapV3(gMap_Path, gMap_PositionCol_Index_ZeroBased, gMap_MapCol_Index_ZeroBased);
             GT_Holder_All = Loader.Load_IBD(gtType, GT_Path, 0);
-            GT_Holder_gt2cM = Loader.Load_IBD(gtType, GT_Path, 2);
-            Reported_Holder_gt2cM = Loader.Load_IBD(tool_Type, reported_Path, 2);
+            GT_Holder_TGT_Len = Loader.Load_IBD(gtType, GT_Path, minBin);
+            Reported_Holder_TGT_Len = Loader.Load_IBD(tool_Type, reported_Path, minBin);
             siteDict = new utl.siteDict(vcf_Path);
 
 
@@ -51,21 +51,21 @@ namespace IBD_BM
             #region compute
             //accuracy
             Console.WriteLine("Accuracy...");
-            Reported_ResStr[0] += (new BinCalculator.Accuracy(GT_Holder_All, Reported_Holder_gt2cM, gMap)).Acc_Str;
+            Reported_ResStr[0] += (new BinCalculator.Accuracy(GT_Holder_All, Reported_Holder_TGT_Len, gMap)).Acc_Str;
 
             //lenAcc
             Console.WriteLine("Len Accuracy...");
-            Reported_ResStr[1] += (new BinCalculator.LengthAccuracy(GT_Holder_All, Reported_Holder_gt2cM, gMap)).Val_Str;
+            Reported_ResStr[1] += (new BinCalculator.LengthAccuracy(GT_Holder_All, Reported_Holder_TGT_Len, gMap)).Val_Str;
 
             //LenDis
             Console.WriteLine("Len Disc...");
 
-            Reported_ResStr[2] += (new BinCalculator.LengthDiscrepancy(GT_Holder_All, Reported_Holder_gt2cM, gMap)).Val_Str;
+            Reported_ResStr[2] += (new BinCalculator.LengthDiscrepancy(GT_Holder_All, Reported_Holder_TGT_Len, gMap)).Val_Str;
 
             //recall and power
             Console.WriteLine("Single Power...");
 
-            BinCalculator.Power_OneBest reported_Pow = new BinCalculator.Power_OneBest(GT_Holder_gt2cM, Reported_Holder_gt2cM, gMap);
+            BinCalculator.Power_OneBest reported_Pow = new BinCalculator.Power_OneBest(GT_Holder_TGT_Len, Reported_Holder_TGT_Len, gMap);
 
             Reported_ResStr[3] += reported_Pow.HitCoverage_Str;
 
@@ -75,7 +75,7 @@ namespace IBD_BM
             //now use full set of reported IBD
             Console.WriteLine("Multi Power...");
 
-            BinCalculator.Power_MultiCoverage reported_mPow = new BinCalculator.Power_MultiCoverage(GT_Holder_gt2cM, Reported_Holder_gt2cM, gMap, siteDict);
+            BinCalculator.Power_MultiCoverage reported_mPow = new BinCalculator.Power_MultiCoverage(GT_Holder_TGT_Len, Reported_Holder_TGT_Len, gMap, siteDict);
 
             Reported_ResStr[5] += reported_mPow.CoverageHit_Str;
 

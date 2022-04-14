@@ -27,7 +27,7 @@ namespace IBD_BM
                 return nBin - 1;
             }
 
-            return (int)((cm - 2) / binLen);
+            return (int)((cm - minBin) / binLen);
 
         }
 

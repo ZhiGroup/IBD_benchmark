@@ -1,4 +1,4 @@
-/*
+﻿/*
 Author: Kecong Tang(Benny)
 Program entrance, for clear demonstration, only a single example is provied.
 */
@@ -180,20 +180,37 @@ namespace IBD_BM
                 }
                 if (line.StartsWith("out_Path"))
                 {
-                    out_Path = pathCheck_Read("out_Path", parts);
+                    out_Path = dirCheck_Read("out_Path", parts);
                     continue;
                 }
 
             }
 
-
-            out_Path = reported_Path + ".IBD_BM_Result.txt";
-
+            if (String.IsNullOrWhiteSpace(out_Path))
+            {
+                out_Path = reported_Path + ".IBD_BM_Result.txt";
+            }
             Console.WriteLine(configFilePath + " Loaded");
 
 
 
         }
+
+        public static string dirCheck_Read(string name, string[] parts)
+        {
+
+
+            if (parts.Count() != 2 || Directory.Exists(Path.GetDirectoryName( parts[1])) == false || String.IsNullOrWhiteSpace(parts[1]))
+            {
+                Console.WriteLine("Path Error [" + name + "]. Check path and make sure using Tab delimiter.");
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
+
+            Console.WriteLine(name + ":\t" + parts[1]);
+            return parts[1];
+        }
+
 
         public static string pathCheck_Read(string name,string[] parts)
         {
