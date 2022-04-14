@@ -3,7 +3,7 @@
 ####minBin minimum(first) genetic length for binning  
 ####maxBin maximum(last) genetic length for binning
 ####binLen length of each bin
-####phasingErrorData	running phasing error test data set
+####phasingErrorData	True or False, "True" will enable diplotype match instead of haplotype match, for phasing error data set.
 ####gMap_PositionCol_Index_ZeroBased	zero based column index of genetic map that has position info
 ####gMap_MapCol_Index_ZeroBased	zero based column index of genetic map that has genetic map info
 ####tool_Name	name of the IBD detection tool, Currently supported formats: FastSMC,hap-IBD,iLash,RaPID and TPBWT, add/modify the paser in Loader.cs for more formats.
@@ -13,6 +13,9 @@
 ####vcf_Path	path of vcf file that used as the input to IBD detection software 
 ####GT_Path	path of ground truth file. Note: formats could be different may need to modify parser in Loader module
 ####out_Path	path of accuracy and power result.
+
+
+phasingErrorData	false
 
 minBin	2
 maxBin	7
