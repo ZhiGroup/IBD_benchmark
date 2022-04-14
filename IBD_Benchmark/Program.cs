@@ -40,7 +40,7 @@ namespace IBD_BM
         
         static void Main(string[] args)
         {
-            Console.WriteLine("IBD Benchmark Tool v1.0.");
+            Console.WriteLine("IBD Benchmark Tool v1.01.");
 
             loadConfig(args);
 
@@ -80,6 +80,12 @@ namespace IBD_BM
             {
                 parts = line.Split('\t');
 
+
+                if (line.StartsWith("phasingErrorData"))
+                {
+                    phasingErrorData = boolCheck_Read("phasingErrorData", parts);
+                    continue;
+                }
 
                 if (line.StartsWith("gMap_PositionCol_Index_ZeroBased"))
                 {
@@ -184,6 +190,10 @@ namespace IBD_BM
                     continue;
                 }
 
+
+
+
+
             }
 
             if (String.IsNullOrWhiteSpace(out_Path))
@@ -194,6 +204,31 @@ namespace IBD_BM
 
 
 
+        }
+
+
+        public static bool boolCheck_Read(string name, string[] parts)
+        {
+
+
+            if (parts.Count() != 2 || String.IsNullOrWhiteSpace(parts[1]))
+            {
+                Console.WriteLine("Path Error [" + name + "]. Check path and make sure using Tab delimiter.");
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
+
+            Console.WriteLine(name + ":\t" + parts[1]);
+
+            if (parts[1].ToLower() == "true")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+    
         }
 
         public static string dirCheck_Read(string name, string[] parts)
