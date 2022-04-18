@@ -7,7 +7,6 @@ import msprime
 import numpy
 import sys
 import math
-import random
 from bisect import bisect_right, bisect_left
 
 
@@ -51,47 +50,6 @@ def read_vcf_and_filter_biallelic_sites(file_input_name, file_output_name, map_o
         for physical_position, genetic_position in zip(vcf_biallelic_physical_positions, vcf_biallelic_genetic_positions):
             map_output.write(f"{physical_position}\t{genetic_position}\n")
     return vcf_biallelic_physical_positions
-
-
-def read_vcf_and_filter_high_minor_allele_sites(file_input_name, file_output_name, minor_allele_rate_threshold, map_output_name, physical_positions, genetic_positions):
-    vcf_high_minor_allele_physical_positions = []
-    with open(file_output_name, "w") as file_output:
-        with open(file_input_name, "r") as file_input:
-            for line_number, file_input_line in enumerate(file_input):
-                if file_input_line.startswith("##"):
-                    file_output.write(file_input_line)
-                elif file_input_line.startswith("#"):
-                    file_output.write(file_input_line)
-                    file_input_line = file_input_line.strip().split("\t")
-                    number_of_individuals = len(file_input_line) - 9
-                else:
-                    count_of_value_zero = 0
-                    count_of_value_one = 0
-                    file_input_line_tokens = file_input_line.strip().split("\t")
-                    if len(file_input_line_tokens) >= 9:
-                        for token in file_input_line_tokens:
-                            individual_haplotype_values = token.strip().split("|")
-                            if len(individual_haplotype_values) >= 2:
-                                if individual_haplotype_values[0] == "0":
-                                    count_of_value_zero += 1
-                                else:
-                                    count_of_value_one += 1
-                                if individual_haplotype_values[1] == "0":
-                                    count_of_value_zero += 1
-                                else:
-                                    count_of_value_one += 1
-                        if count_of_value_zero > count_of_value_one:
-                            minor_allele_rate = float(count_of_value_one) / float(number_of_individuals * 2)
-                        else:
-                            minor_allele_rate = float(count_of_value_zero) / float(number_of_individuals * 2)
-                        if minor_allele_rate >= minor_allele_rate_threshold:
-                            vcf_high_minor_allele_physical_positions.append(int(file_input_line_tokens[1]))
-                            file_output.write(file_input_line)
-    vcf_high_minor_allele_genetic_positions = numpy.interp(vcf_high_minor_allele_physical_positions, physical_positions, genetic_positions)
-    with open(map_output_name, "w") as map_output:
-        for physical_position, genetic_position in zip(vcf_high_minor_allele_physical_positions, vcf_high_minor_allele_genetic_positions):
-            map_output.write(f"{physical_position}\t{genetic_position}\n")
-    return vcf_high_minor_allele_physical_positions
 
 
 def read_vcf_and_filter_array_sites(file_input_name, file_output_name, number_of_sites_input, number_of_sites_array_template, map_output_name, physical_positions, genetic_positions):
@@ -143,88 +101,6 @@ def read_vcf_and_filter_array_sites(file_input_name, file_output_name, number_of
         for physical_position, genetic_position in zip(vcf_array_physical_positions, vcf_array_genetic_positions):
             map_output.write(f"{physical_position}\t{genetic_position}\n")
     return vcf_array_physical_positions
-
-
-def read_vcf_and_add_genotyping_error(file_input_name, file_output_name, genotyping_error_rate):
-    number_of_sites = 0
-    number_of_individuals = 0
-    vcf_genotyping_error_physical_positions = []
-    header_lines = []
-    info_part_lines = []
-    data_part_lines = []
-    with open(file_input_name, "r") as file_input:
-        for line_number, file_input_line in enumerate(file_input):
-            if file_input_line.startswith("##"):
-                header_lines.append(file_input_line)
-            elif file_input_line.startswith("#"):
-                header_lines.append(file_input_line)
-                file_input_line = file_input_line.strip().split("\t")
-                number_of_individuals = len(file_input_line) - 9
-            else:
-                file_input_line_tokens = file_input_line.strip().split("\t")
-                if len(file_input_line_tokens) >= 9:
-                    number_of_sites += 1
-                    vcf_genotyping_error_physical_positions.append(int(file_input_line_tokens[1]))
-                    info_part_line = ""
-                    data_part_line = []
-                    for token_index, token in enumerate(file_input_line_tokens):
-                        if token_index <= 8:
-                            info_part_line += token
-                            if token_index <= 7:
-                                info_part_line += "\t"
-                        else:
-                            data_part_line.append(token)
-                    info_part_lines.append(info_part_line)
-                    data_part_lines.append(data_part_line)
-
-    genotype_error_rate_per_haplotype = genotyping_error_rate / 2.0
-    number_of_sites_to_flip_per_haplotype = genotype_error_rate_per_haplotype * number_of_sites
-    site_indices_to_flip_haplotype_0 = set()
-    while len(site_indices_to_flip_haplotype_0) < number_of_sites_to_flip_per_haplotype + 1:
-        random_site_index = random.randint(0, number_of_sites - 1)
-        site_indices_to_flip_haplotype_0.add(random_site_index)
-    site_indices_to_flip_haplotype_1 = set()
-    while len(site_indices_to_flip_haplotype_1) < number_of_sites_to_flip_per_haplotype + 1:
-        random_site_index = random.randint(0, number_of_sites - 1)
-        if random_site_index not in site_indices_to_flip_haplotype_0:
-            site_indices_to_flip_haplotype_1.add(random_site_index)
-
-    with open(file_output_name, "w") as vcf_file:
-        for vcf_header_line in header_lines:
-            vcf_file.write(f"{vcf_header_line}")
-        for site_index, (info_part_line, data_part_line) in enumerate(zip(info_part_lines, data_part_lines)):
-            vcf_file.write(f"{info_part_line}\t")
-            for individual_id, individual_haplotypes in enumerate(data_part_line):
-                haplotype_values = individual_haplotypes.strip().split("|")
-                if len(haplotype_values) >= 2:
-                    if site_index in site_indices_to_flip_haplotype_0:
-                        if haplotype_values[0] == "0":
-                            new_haplotype_values = "1|" + haplotype_values[1]
-                        else:
-                            new_haplotype_values = "0|" + haplotype_values[1]
-                    elif site_index in site_indices_to_flip_haplotype_1:
-                        if haplotype_values[1] == "0":
-                            new_haplotype_values = haplotype_values[0] + "|1"
-                        else:
-                            new_haplotype_values = haplotype_values[0] + "|0"
-                    else:
-                        new_haplotype_values = individual_haplotypes
-                    vcf_file.write(f"{new_haplotype_values}")
-                    if individual_id < number_of_individuals - 1:
-                        vcf_file.write(f"\t")
-                    else:
-                        vcf_file.write(f"\n")
-
-    info_file_output_name = file_output_name[0:-3] + "log"
-    with open(info_file_output_name, "w") as info_file:
-        info_file.write(f"sites_added_genotyping_errors_(genotyping_error_rate={genotyping_error_rate}):\n")
-        info_file.write(f"site_index,physical_position_of_haplotype_0_(total_sites={len(site_indices_to_flip_haplotype_0)}):\n")
-        for site_index in site_indices_to_flip_haplotype_0:
-            info_file.write(f"{site_index},{vcf_genotyping_error_physical_positions[site_index]}\n")
-        info_file.write(f"site_index,physical_position_of_haplotype_1_(total_sites={len(site_indices_to_flip_haplotype_1)}):\n")
-        for site_index in site_indices_to_flip_haplotype_1:
-            info_file.write(f"{site_index},{vcf_genotyping_error_physical_positions[site_index]}\n")
-    return len(site_indices_to_flip_haplotype_0) + len(site_indices_to_flip_haplotype_1), vcf_genotyping_error_physical_positions
 
 
 def find_true_ibds(file_output_name, chromosome_id, haplotype_ids, tree_sequence, minimum_genetic_length, physical_distance_to_sample, genetic_position_map):
@@ -343,18 +219,16 @@ if __name__ == '__main__':
     mutation_rate = program_arguments[2]
     random_seed = program_arguments[3]
     number_of_individuals_to_sample = program_arguments[4]
-    minor_allele_rate = program_arguments[5]
-    number_of_sites_array_template = program_arguments[6]
-    physical_distance_to_sample = program_arguments[7]
-    minimum_genetic_length = program_arguments[8]
-    output_directory_path = program_arguments[9]
+    number_of_sites_array_template = program_arguments[5]
+    physical_distance_to_sample = program_arguments[6]
+    minimum_genetic_length = program_arguments[7]
+    output_directory_path = program_arguments[8]
 
-    print(f"program={program_name},chromosome_id={chromosome_id},input_map_file={input_map_file},mutation_rate={mutation_rate},random_seed={random_seed},number_of_individuals_to_sample={number_of_individuals_to_sample},minor_allele_rate={minor_allele_rate},number_of_sites_array_template={number_of_sites_array_template},physical_distance_to_sample={physical_distance_to_sample},minimum_genetic_length={minimum_genetic_length},output_directory_path={output_directory_path}")
+    print(f"program={program_name},chromosome_id={chromosome_id},input_map_file={input_map_file},mutation_rate={mutation_rate},random_seed={random_seed},number_of_individuals_to_sample={number_of_individuals_to_sample},number_of_sites_array_template={number_of_sites_array_template},physical_distance_to_sample={physical_distance_to_sample},minimum_genetic_length={minimum_genetic_length},output_directory_path={output_directory_path}")
 
     mutation_rate_value = float(mutation_rate)
     random_seed_value = int(random_seed)
     number_of_individuals_to_sample_value = int(number_of_individuals_to_sample)
-    minor_allele_rate_value = float(minor_allele_rate)
     number_of_sites_array_template_value = int(number_of_sites_array_template)
     physical_distance_to_sample_value = int(physical_distance_to_sample)
     minimum_genetic_length_value = float(minimum_genetic_length)
@@ -363,13 +237,10 @@ if __name__ == '__main__':
     output_raw_map_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.fit.map"
     output_biallelic_vcf_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.biallelic.vcf"
     output_biallelic_map_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.biallelic.fit.map"
-    output_high_minor_allele_vcf_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.ma{minor_allele_rate}.vcf"
-    output_high_minor_allele_map_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.ma{minor_allele_rate}.fit.map"
     output_array_vcf_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.array.vcf"
     output_array_map_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.array.fit.map"
     output_raw_vcf_true_ibd_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.ti{minimum_genetic_length}.txt"
     output_biallelic_vcf_true_ibd_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.biallelic.ti{minimum_genetic_length}.txt"
-    output_high_minor_allele_vcf_true_ibd_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.ma{minor_allele_rate}.ti{minimum_genetic_length}.txt"
     output_array_vcf_true_ibd_file = output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.array.ti{minimum_genetic_length}.txt"
     print(f"end get arguments")
 
@@ -425,39 +296,10 @@ if __name__ == '__main__':
     print(f"number_of_sites_biallelic={len(vcf_biallelic_physical_positions)}")
     print(f"end generate biallelic vcf file")
 
-    print(f"start generate high minor allele rate vcf file")
-    vcf_high_minor_allele_physical_positions = read_vcf_and_filter_high_minor_allele_sites(output_biallelic_vcf_file, output_high_minor_allele_vcf_file, minor_allele_rate_value, output_high_minor_allele_map_file, physical_positions, genetic_positions)
-    print(f"number_of_sites_high_minor_allele={len(vcf_high_minor_allele_physical_positions)}")
-    print(f"end generate high minor allele rate vcf file")
-
     print(f"start generate array vcf file")
     vcf_array_physical_positions = read_vcf_and_filter_array_sites(output_biallelic_vcf_file, output_array_vcf_file, len(vcf_biallelic_physical_positions), number_of_sites_array_template_value, output_array_map_file, physical_positions, genetic_positions)
     print(f"number_of_sites_array={len(vcf_array_physical_positions)}")
     print(f"end generate array vcf file")
-
-    genotyping_error_sequence_rates = [0.0002, 0.0004, 0.0005, 0.001, 0.002, 0.003, 0.004]
-    genotyping_error_array_rates = [0.0005, 0.001, 0.002, 0.003, 0.004]
-
-    print(f"start generate genotyping error biallelic vcf files")
-    output_genotyping_error_vcf_files = [output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.biallelic.err{genotyping_error_rate}.vcf" for genotyping_error_rate in genotyping_error_sequence_rates]
-    for (genotyping_error_rate, output_genotyping_error_vcf_file) in zip(genotyping_error_sequence_rates, output_genotyping_error_vcf_files):
-        vcf_number_of_sites_genotyping_error, vcf_genotyping_error_physical_positions = read_vcf_and_add_genotyping_error(output_biallelic_vcf_file, output_genotyping_error_vcf_file, genotyping_error_rate)
-        print(f"number_of_sites_genotyping_error={vcf_number_of_sites_genotyping_error}")
-    print(f"end generate genotyping error biallelic vcf files")
-
-    print(f"start generate genotyping error high minor allele rate vcf files")
-    output_genotyping_error_vcf_files = [output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.ma{minor_allele_rate}.err{genotyping_error_rate}.vcf" for genotyping_error_rate in genotyping_error_sequence_rates]
-    for (genotyping_error_rate, output_genotyping_error_vcf_file) in zip(genotyping_error_sequence_rates, output_genotyping_error_vcf_files):
-        vcf_number_of_sites_genotyping_error, vcf_genotyping_error_physical_positions = read_vcf_and_add_genotyping_error(output_high_minor_allele_vcf_file, output_genotyping_error_vcf_file, genotyping_error_rate)
-        print(f"number_of_sites_genotyping_error={vcf_number_of_sites_genotyping_error}")
-    print(f"end generate genotyping error high minor allele rate vcf files")
-
-    print(f"start generate genotyping error array vcf files")
-    output_genotyping_error_vcf_files = [output_directory_path + f"ooa{number_of_individuals_to_sample}.chr{chromosome_id}.array.err{genotyping_error_rate}.vcf" for genotyping_error_rate in genotyping_error_array_rates]
-    for (genotyping_error_rate, output_genotyping_error_vcf_file) in zip(genotyping_error_array_rates, output_genotyping_error_vcf_files):
-        vcf_number_of_sites_genotyping_error, vcf_genotyping_error_physical_positions = read_vcf_and_add_genotyping_error(output_array_vcf_file, output_genotyping_error_vcf_file, genotyping_error_rate)
-        print(f"number_of_sites_genotyping_error={vcf_number_of_sites_genotyping_error}")
-    print(f"end generate genotyping error array vcf files")
 
     print(f"start find ground truth ibds of raw vcf file")
     haplotype_ids = numpy.arange(tree_sequence.num_samples)
@@ -469,11 +311,6 @@ if __name__ == '__main__':
     number_of_true_ibds, number_of_true_ibds_biallelic = read_true_ibds_and_convert(output_raw_vcf_true_ibd_file, output_biallelic_vcf_true_ibd_file, vcf_biallelic_physical_positions, vcf_raw_genetic_position_map, minimum_genetic_length_value)
     print(f"number_of_true_ibds_raw={number_of_true_ibds}, number_of_true_ibds_biallelic={number_of_true_ibds_biallelic}")
     print(f"end find ground truth ibds of biallelic vcf file")
-
-    print(f"start find ground truth ibds of high minor allele vcf file")
-    number_of_true_ibds, number_of_true_ibds_high_minor_allele = read_true_ibds_and_convert(output_raw_vcf_true_ibd_file, output_high_minor_allele_vcf_true_ibd_file, vcf_high_minor_allele_physical_positions, vcf_raw_genetic_position_map, minimum_genetic_length_value)
-    print(f"number_of_true_ibds_raw={number_of_true_ibds}, number_of_true_ibds_high_minor_allele={number_of_true_ibds_high_minor_allele}")
-    print(f"end find ground truth ibds of high minor allele vcf file")
 
     print(f"start find ground truth ibds of array vcf file")
     number_of_true_ibds, number_of_true_ibds_array = read_true_ibds_and_convert(output_raw_vcf_true_ibd_file, output_array_vcf_true_ibd_file, vcf_array_physical_positions, vcf_raw_genetic_position_map, minimum_genetic_length_value)
