@@ -2,6 +2,8 @@
 Author: Kecong Tang(Benny)
 Loading unit, contains parsing methods for ground truth files and result files from IBD tools.
 Parsers could to be modified for different formats.
+
+Current pair-key making method only works on numerical based key, this could be modified to string based key hashing for IDs that are not pure numerical.
 */
 using System;
 using System.Collections.Generic;
