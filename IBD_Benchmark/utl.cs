@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
+using System.Threading;
 
 namespace IBD_BM
 {
@@ -298,5 +298,46 @@ namespace IBD_BM
             return len / (r1_right - r1_left);
         }
 
+        public static void listToFile<T>(List<T> data, string filePath)
+        {
+            Console.WriteLine("Writing " + filePath);
+            StreamWriter sw = new StreamWriter(filePath);
+            foreach (var one in data)
+            {
+                sw.WriteLine(one);
+            }
+            sw.Close();
+        }
+
+
+        /// <summary>
+        /// given a list of bin
+        /// bins must be increment sorted
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="bins"></param>
+        /// <returns></returns>
+        public static List<int> Distribution_GivenBins(List<double> nums, List<double> bins)
+        {
+            //List<int> res = new List<int>(bins.Count());
+            int[] res = new int[bins.Count()];
+            Parallel.ForEach(nums, (oneNum) =>
+            //foreach (double oneNum in nums)
+            {
+                for (int BI = bins.Count() - 1; BI >= 0; BI--)
+                {
+                    if (oneNum > bins[BI])
+                    {
+                        Interlocked.Increment(ref res[BI]);
+                        //res[BI]++;
+                        break;
+                    }
+                }
+
+
+            });
+
+            return res.ToList();
+        }
     }
 }
