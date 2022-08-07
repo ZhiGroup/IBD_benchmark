@@ -13,7 +13,7 @@ To Execute, run:
 
   ```IBD_BM_u18 Config.txt``` or ```IBD_BM_u18 Config.txt``` for ubuntu 18
   
-  ```IBD_BM_u21 Config.txt``` or ```IBD_BM_u21 Config.txt``` for ubuntu 21
+  ```IBD_BM_u22 Config.txt``` or ```IBD_BM_u22 Config.txt``` for ubuntu 22
   
   ```IBD_BM.exe Config.txt``` or ```IBD_BM.exe Config.txt``` for windows 10 tested version
   
@@ -35,7 +35,7 @@ For configured executions, please read instructions in ```Config.txt```.
 
 ```IBD_BM_u18``` Ubuntu 18 compiled executable file.
 
-```IBD_BM_u21``` Ubuntu 21 compiled executable file.
+```IBD_BM_u22``` Ubuntu 22 compiled executable file.
 
 ```I_s9.arr.e0.001_2.match.gz``` Rsult from iLash for array data with 0.1% genotyping error.
 
