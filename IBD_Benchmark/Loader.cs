@@ -2,8 +2,6 @@
 Author: Kecong Tang(Benny)
 Loading unit, contains parsing methods for ground truth files and result files from IBD tools.
 Parsers could to be modified for different formats.
-
-Current pair-key making method only works on numerical based key, this could be modified to string based key hashing for IDs that are not pure numerical.
 */
 using System;
 using System.Collections.Generic;
@@ -17,6 +15,27 @@ namespace IBD_BM
 {
     class Loader
     {
+        /// <summary>
+        /// read genetic length from IBD output file.
+        /// Format matter, will fail if format does not support or changed
+        /// </summary>
+        /// <param name="inType"></param>
+        /// <param name="cfg"></param>
+        /// <param name="parts"></param>
+        /// <returns></returns>
+        public static double Read_gLen(dataType inType, LoaderConfig cfg, string[] parts)
+        {
+            if (inType == dataType.TPBWT)
+            {
+                return Convert.ToDouble(parts[4]) - Convert.ToDouble(parts[11]);
+            }
+            else
+            {
+                return Convert.ToDouble(parts[cfg.Len_idx]);
+            }
+
+        }
+
         
         /// <summary>
         /// ID padding: 976	3285	1	0//ID1 ID2 hap1 hap2
