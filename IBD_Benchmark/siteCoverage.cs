@@ -34,7 +34,8 @@ namespace IBD_BM
 
 
         }
-
+        
+        //Core method
         static List<int> runSiteCoverage(Dictionary<long, List<Loader.IBD_Phy_Start_End>> IBDs, utl.siteDict sitDict, string outPath)
         {
 
