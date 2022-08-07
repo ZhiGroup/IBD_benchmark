@@ -22,7 +22,7 @@ Download code files, compile with Microsoft Visual Studio, use Release version f
 
 ### Linux and macOS:
 
-Precompiled versions for ubuntu 18, ubuntu 21 and windows 10 are already uploaded to directory ```/IBD_Benchmark_ExperiencePackage/```. 
+Precompiled versions for ubuntu 18, ubuntu 22 and windows 10 are already uploaded to directory ```/IBD_Benchmark_ExperiencePackage/```. 
 
 However if none of those version work, you can compile the source code. As following:
 
