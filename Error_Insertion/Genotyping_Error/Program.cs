@@ -191,43 +191,6 @@ namespace makeGT_Err
             return result;
         }
 
-        /// <summary>
-        /// random select nSelect from nTotal
-        /// </summary>
-        /// <param name="nSelect"></param>
-        /// <param name="nTotal"></param>
-        /// <returns></returns>
-        public static List<int> randomSelect(int nSelect, int nTotal, int extraSeed = 1)
-        {
-            List<int> result = new List<int>();
-            Random rnd = new Random((int)(DateTime.Now.Ticks + extraSeed));
-            List<double> nums = new List<double>();
-            Dictionary<double, int> val_To_Index = new Dictionary<double, int>();
-            double oneNum = 0;
-
-            int cnt = 0;
-            while (nums.Count() < nTotal)
-            {
-                oneNum = rnd.NextDouble();
-                if (val_To_Index.ContainsKey(oneNum))
-                { continue; }
-
-                val_To_Index.Add(oneNum, cnt);
-                nums.Add(oneNum);
-                cnt++;
-            }
-
-
-            nums.Sort();
-
-            for (int i = 0; i < nSelect; i++)
-            {
-                result.Add(val_To_Index[nums[i]]);
-            }
-
-            return result;
-        }
-
 
         /// <summary>
         /// random select nSelect from nTotal
