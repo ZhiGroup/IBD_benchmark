@@ -1,6 +1,12 @@
 ﻿/*
 Author: Kecong Tang(Benny)
 Program entrance, for clear demonstration, only a single example is provied.
+
+Three major entrances availables in this package:
+1. Call GroupCaller.run() to run power and accuracy measures.
+2. Call Relatedness.singleRun() for relatedness analysis.
+3. Call siteCoverage.singleRun() for IBD distribution.
+
 */
 
 using System;
