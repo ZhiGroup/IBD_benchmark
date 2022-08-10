@@ -1,11 +1,11 @@
-##This method down-samples sequencing data into array data.
+## This method down-samples sequencing data into array data.
 
 Given a target number of markers, the program will try to take as much marker as possible and as even as possible in term of genetic location.
 
 
 The program does:
 1. Scan and calculate the genetic location and minor allele count in the sequencing data.
-2. Create a list of collection and output a total number of site to be collected by using a certain window size.
+2. Create a list to collect by using a certain window size.
 3. Extract the sites from the sequencing data by the list of collection.
 
 
