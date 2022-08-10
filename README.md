@@ -6,11 +6,14 @@ For quick and simple demonstration precompiled executable versions and a set of 
 
 The project does:
 1. Simulate human genotype data (VCF file).
-2. Add genotyping errors and phasing errors to VCF file.
-3. Run IBD detection tools with the data, and collect the IBD results.
-4. Evaluate the IBD results according to ground truth by multiple metrics.
+2. Create array data by downsampling sequencing data from step 1.
+3. Add genotyping errors and phasing errors to VCF files.
+4. Run IBD detection tools with the data, and collect the IBD results.
+5. Evaluate the IBD results according to ground truth by multiple metrics.
 
 Data simulation code could be found in ```Simulation``` directory.
+
+Downsample method could be found in ```Downsample``` directory.
 
 Error insertion code could be found in  ```Error_Insertion``` directory.
 
