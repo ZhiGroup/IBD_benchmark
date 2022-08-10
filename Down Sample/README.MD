@@ -1,6 +1,6 @@
 ## This method down-samples sequencing data into array data.
 
-Given a target number of markers, the program will try to take as much marker as possible and as even as possible in term of genetic location.
+This program considers the fact that sequening data usually has uneven marker distribution, and simply taking a site from a fixed number of marker will produce uneven markers in arrayd data. Given a target number of markers, the program will try to take as much marker as possible and as even as possible in term of genetic location.
 
 
 The program does:
