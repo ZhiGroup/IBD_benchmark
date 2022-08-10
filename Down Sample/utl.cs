@@ -9,6 +9,61 @@ namespace DownSample
 {
     class utl
     {
+        public static int getPOS_Int(string line)
+        {
+            string pos = getPOS(line);
+            return Convert.ToInt32(pos);
+
+        }
+
+        public static string getPOS(string line)
+        {
+            //#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	NWD112649	NWD278543	
+            //         1   2   3   4   5     6         7     8         9
+
+            int posStart = 0;
+            int posEnd = 0;
+            int tabCnt = 0;
+            for (int i = 0; i < line.Length; i++)
+            {
+                if (line[i] == '\t')
+                {
+                    tabCnt++;
+                    if (tabCnt == 1)
+                    {
+                        posStart = i + 1;
+                    }
+                    if (tabCnt == 2)
+                    {
+                        posEnd = i;
+                        break;
+                    }
+                }
+
+
+
+            }
+            return line.Substring(posStart, posEnd - posStart);
+        }
+        public static List<string> get_All_POS(string vcfPath)
+        {
+            List<string> pos = new List<string>();
+            string line;
+            StreamReader sr = new StreamReader(vcfPath);
+            while ((line = sr.ReadLine()) != null && line.StartsWith("#"))
+            {
+                continue;
+            }
+
+            do
+            {
+                pos.Add(getPOS(line));
+            } while ((line = sr.ReadLine()) != null);
+            sr.Close();
+            return pos;
+        }
+
+
         public static void listToFile<T>(List<T> data, string filePath)
         {
             Console.WriteLine("Writing " + filePath);
