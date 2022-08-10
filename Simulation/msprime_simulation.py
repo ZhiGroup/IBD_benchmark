@@ -30,77 +30,6 @@ def read_vcf_and_get_genetic_map(file_input_name, map_output_name, physical_posi
     return genetic_position_map
 
 
-def read_vcf_and_filter_biallelic_sites(file_input_name, file_output_name, map_output_name, physical_positions, genetic_positions):
-    vcf_biallelic_physical_positions = []
-    with open(file_output_name, "w") as file_output:
-        with open(file_input_name, "r") as file_input:
-            for line_number, file_input_line in enumerate(file_input):
-                if file_input_line.startswith("#"):
-                    file_output.write(file_input_line)
-                else:
-                    file_input_line_tokens = file_input_line.strip().split("\t")
-                    if len(file_input_line_tokens) >= 9:
-                        reference_base = file_input_line_tokens[3]
-                        alternate_base = file_input_line_tokens[4]
-                        if len(reference_base) == 1 and len(alternate_base) == 1:
-                            vcf_biallelic_physical_positions.append(int(file_input_line_tokens[1]))
-                            file_output.write(file_input_line)
-    vcf_biallelic_genetic_positions = numpy.interp(vcf_biallelic_physical_positions, physical_positions, genetic_positions)
-    with open(map_output_name, "w") as map_output:
-        for physical_position, genetic_position in zip(vcf_biallelic_physical_positions, vcf_biallelic_genetic_positions):
-            map_output.write(f"{physical_position}\t{genetic_position}\n")
-    return vcf_biallelic_physical_positions
-
-
-def read_vcf_and_filter_array_sites(file_input_name, file_output_name, number_of_sites_input, number_of_sites_array_template, map_output_name, physical_positions, genetic_positions):
-    vcf_array_physical_positions = []
-    window_size = number_of_sites_input // number_of_sites_array_template
-    current_site = 0
-    # current_site_information stores line data, physical position, and minor allele rate
-    current_site_information = ["", 0, 0.0]
-    with open(file_output_name, "w") as file_output:
-        with open(file_input_name, "r") as file_input:
-            for line_number, file_input_line in enumerate(file_input):
-                if file_input_line.startswith("##"):
-                    file_output.write(file_input_line)
-                elif file_input_line.startswith("#"):
-                    file_output.write(file_input_line)
-                    file_input_line = file_input_line.strip().split("\t")
-                    number_of_individuals = len(file_input_line) - 9
-                else:
-                    count_of_value_zero = 0
-                    count_of_value_one = 0
-                    file_input_line_tokens = file_input_line.strip().split("\t")
-                    if len(file_input_line_tokens) >= 9:
-                        for token in file_input_line_tokens:
-                            individual_haplotype_values = token.strip().split("|")
-                            if len(individual_haplotype_values) >= 2:
-                                if individual_haplotype_values[0] == "0":
-                                    count_of_value_zero += 1
-                                else:
-                                    count_of_value_one += 1
-                                if individual_haplotype_values[1] == "0":
-                                    count_of_value_zero += 1
-                                else:
-                                    count_of_value_one += 1
-                        if count_of_value_zero > count_of_value_one:
-                            minor_allele_rate = float(count_of_value_one) / float(number_of_individuals * 2)
-                        else:
-                            minor_allele_rate = float(count_of_value_zero) / float(number_of_individuals * 2)
-                        if minor_allele_rate > current_site_information[2]:
-                            current_site_information[0] = file_input_line
-                            current_site_information[1] = int(file_input_line_tokens[1])
-                            current_site_information[2] = minor_allele_rate
-                        if (current_site + 1) % window_size == 0 or current_site == number_of_sites_input - 1:
-                            file_output.write(current_site_information[0])
-                            vcf_array_physical_positions.append(current_site_information[1])
-                            current_site_information = ["", 0, 0.0]
-                        current_site += 1
-    vcf_array_genetic_positions = numpy.interp(vcf_array_physical_positions, physical_positions, genetic_positions)
-    with open(map_output_name, "w") as map_output:
-        for physical_position, genetic_position in zip(vcf_array_physical_positions, vcf_array_genetic_positions):
-            map_output.write(f"{physical_position}\t{genetic_position}\n")
-    return vcf_array_physical_positions
 
 
 def find_true_ibds(file_output_name, chromosome_id, haplotype_ids, tree_sequence, minimum_genetic_length, physical_distance_to_sample, genetic_position_map):
@@ -146,51 +75,6 @@ def find_true_ibds(file_output_name, chromosome_id, haplotype_ids, tree_sequence
         last_tree_site_previous_tree = last_tree_site_current_tree
     return None
 
-
-def read_true_ibds_and_convert(file_input_name, file_output_name, new_physical_positions, genetic_position_map, minimum_genetic_length):
-    number_of_true_ibds = 0
-    number_of_true_ibds_converted = 0
-    with open(file_output_name, "w") as file_output:
-        with open(file_input_name, "r") as file_input:
-            for line_number, file_input_line in enumerate(file_input):
-                if file_input_line.startswith("#"):
-                    file_output.write(file_input_line)
-                else:
-                    file_input_line_tokens = file_input_line.strip().split(",")
-                    if len(file_input_line_tokens) >= 8:
-                        number_of_true_ibds += 1
-                        individual_1_id = file_input_line_tokens[0]
-                        individual_1_haplotype_id = file_input_line_tokens[1]
-                        individual_2_id = file_input_line_tokens[2]
-                        individual_2_haplotype_id = file_input_line_tokens[3]
-                        chromosome_id = file_input_line_tokens[4]
-                        true_ibd_physical_position_start = int(file_input_line_tokens[5])
-                        true_ibd_physical_position_end = int(file_input_line_tokens[6])
-                        genetic_length = file_input_line_tokens[7]
-
-                        search_value_index = bisect_left(new_physical_positions, true_ibd_physical_position_start)
-                        if search_value_index >= len(new_physical_positions):
-                            search_value_index = len(new_physical_positions) - 1
-                        elif search_value_index < 0:
-                            search_value_index = 0
-                        elif search_value_index < len(new_physical_positions) - 1 and new_physical_positions[search_value_index + 1] == true_ibd_physical_position_start:
-                            search_value_index = search_value_index + 1
-                        true_ibd_physical_position_start_converted = new_physical_positions[search_value_index]
-
-                        search_value_index = bisect_right(new_physical_positions, true_ibd_physical_position_end)
-                        if search_value_index >= len(new_physical_positions):
-                            search_value_index = len(new_physical_positions) - 1
-                        elif search_value_index < 0:
-                            search_value_index = 0
-                        elif search_value_index > 0 and new_physical_positions[search_value_index - 1] <= true_ibd_physical_position_end:
-                            search_value_index = search_value_index - 1
-                        true_ibd_physical_position_end_converted = new_physical_positions[search_value_index]
-
-                        converted_true_ibd_genetic_length = genetic_position_map[true_ibd_physical_position_end_converted] - genetic_position_map[true_ibd_physical_position_start_converted]
-                        if converted_true_ibd_genetic_length >= minimum_genetic_length:
-                            number_of_true_ibds_converted += 1
-                            file_output.write(f"{individual_1_id},{individual_1_haplotype_id},{individual_2_id},{individual_2_haplotype_id},{chromosome_id},{true_ibd_physical_position_start_converted},{true_ibd_physical_position_end_converted},{converted_true_ibd_genetic_length:.6f}\n")
-    return number_of_true_ibds, number_of_true_ibds_converted
 
 
 def read_genetic_map_hapmap(file_input_name):
@@ -291,15 +175,6 @@ if __name__ == '__main__':
     print(f"number_of_sites_raw={tree_sequence.num_sites}")
     print(f"end generate raw vcf file")
 
-    print(f"start generate biallelic vcf file")
-    vcf_biallelic_physical_positions = read_vcf_and_filter_biallelic_sites(output_raw_vcf_file, output_biallelic_vcf_file, output_biallelic_map_file, physical_positions, genetic_positions)
-    print(f"number_of_sites_biallelic={len(vcf_biallelic_physical_positions)}")
-    print(f"end generate biallelic vcf file")
-
-    print(f"start generate array vcf file")
-    vcf_array_physical_positions = read_vcf_and_filter_array_sites(output_biallelic_vcf_file, output_array_vcf_file, len(vcf_biallelic_physical_positions), number_of_sites_array_template_value, output_array_map_file, physical_positions, genetic_positions)
-    print(f"number_of_sites_array={len(vcf_array_physical_positions)}")
-    print(f"end generate array vcf file")
 
     print(f"start find ground truth ibds of raw vcf file")
     haplotype_ids = numpy.arange(tree_sequence.num_samples)
@@ -307,15 +182,6 @@ if __name__ == '__main__':
     find_true_ibds(output_raw_vcf_true_ibd_file, chromosome_id, haplotype_ids, tree_sequence, minimum_genetic_length_value, physical_distance_to_sample_value, vcf_raw_genetic_position_map)
     print(f"end find ground truth ibds of raw vcf file")
 
-    print(f"start find ground truth ibds of biallelic vcf file")
-    number_of_true_ibds, number_of_true_ibds_biallelic = read_true_ibds_and_convert(output_raw_vcf_true_ibd_file, output_biallelic_vcf_true_ibd_file, vcf_biallelic_physical_positions, vcf_raw_genetic_position_map, minimum_genetic_length_value)
-    print(f"number_of_true_ibds_raw={number_of_true_ibds}, number_of_true_ibds_biallelic={number_of_true_ibds_biallelic}")
-    print(f"end find ground truth ibds of biallelic vcf file")
-
-    print(f"start find ground truth ibds of array vcf file")
-    number_of_true_ibds, number_of_true_ibds_array = read_true_ibds_and_convert(output_raw_vcf_true_ibd_file, output_array_vcf_true_ibd_file, vcf_array_physical_positions, vcf_raw_genetic_position_map, minimum_genetic_length_value)
-    print(f"number_of_true_ibds_raw={number_of_true_ibds}, number_of_true_ibds_array={number_of_true_ibds_array}")
-    print(f"end find ground truth ibds of array vcf file")
 
     print(f"end simulation")
     sys.exit(0)
