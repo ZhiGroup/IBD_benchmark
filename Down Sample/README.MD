@@ -14,3 +14,9 @@ In Step 2, using smaller window size will produce more even markers, but less nu
 bigger window size will give more uneven markers, but more sites in array data.
 Try multiple rounds to find ideal window size.
 We used 5 as window size in our project.
+
+
+
+
+MapGroundTruth: 
+After downsampling the sites in original ground truth file are likely to be misaligned, this module maps the original sites in the ground truth file in sequencing data to the sites in new created array data.
