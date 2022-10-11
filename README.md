@@ -52,7 +52,7 @@ In each row: Accuracy,Length Accuracy,Length Accuracy,Length Discepancy,Recall,P
 In each column: values for each bin. The binning could be modified in the ```/IBD_Benchmark_ExperiencePackage/Config.txt``` file by adjusting starting bin, ending bin and bin length. 
 e.g, ```minBin=2; maxBin=7; binLen=1;``` This means the eveluation will only collect IBD length >=2cM, and the last bin will have results for all IBD that >= 7cM.
 
-
+```
 Bin_0	Bin_1	Bin_2	Bin_3	Bin_4	Bin_5	
 
 Accuracy
@@ -76,5 +76,5 @@ ToolName	0.278648090397311	0.781747849229436	0.898703346520435	0.910589449245453
 Accumulative Power
 ToolName	0.26727813509913	0.647393065974722	0.745047223562128	0.783646771365684	0.81164894727716	0.890121550075723	
 
-
+```
 
