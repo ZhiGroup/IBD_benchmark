@@ -28,12 +28,12 @@ Evaluation software code could be found in  ```IBD_Benchmark``` directory.
 Details instructions could be found and configured in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
 The program will read the configure file to execute.
 
-## Input Formats:
-### IBD output from an IBD decetion software
+### Formats:
+#### IBD output from an IBD decetion software
 We prebuilt 5 format pasers: FastSMC,hap-IBD,iLash,RaPID, and TPBWT. The choice of input type could be defined in ```/IBD_Benchmark_ExperiencePackage/Config.txt```.
 For other formats of IBD output you may add additional parser in ```Loader.cs```, or you may also convert your IBD output into one of the supported format. Details of each format could be found in their GitHub page. 
 
-### Ground truth IBD format
+#### Ground truth IBD format
 An example of ground truth file could be found in ```IBD_benchmark/IBD_Benchmark_ExperiencePackage/arr.gt.txt.gz``` as:
 
 #individual_1_id,individual_1_haplotype_id,individual_2_id,individual_2_haplotype_id,chromosome_id,true_ibd_physical_position_start,true_ibd_physical_position_end,genetic_length
@@ -45,5 +45,31 @@ An example of ground truth file could be found in ```IBD_benchmark/IBD_Benchmark
 947,1,59,0,20,69403,352433,1.012187
 
 Same as the input format, you may add additional parser in ```Loader.cs```, or convert your ground truth file into this format.
+
+## Output:
+Binned evaluation results.
+
+Bin_0	Bin_1	Bin_2	Bin_3	Bin_4	Bin_5	
+Accuracy
+FastSMC	0.998434048366469	0.99970583368572	0.999488444322646	0.99975333873639	0.99988419894621	0.999829646394588	
+
+Length Accuracy
+FastSMC	0.979041095412064	0.98614326906595	0.989468088410164	0.991318139999737	0.993142297654614	0.995252082425287	
+
+Length Discepancy
+FastSMC	1.14525992959265	1.72141823296979	2.27453118780375	3.05301635367978	3.62253222715984	7.63100423669796	
+
+Recall
+FastSMC	0.278648090397311	0.781735470693817	0.892241197257458	0.87602218496066	0.86575977604759	0.742540508230885	
+
+Power
+FastSMC	0.248235241129757	0.64423443971452	0.738102138000221	0.752536732567245	0.750271981641258	0.67780075119114	
+
+Accumulative Recall
+FastSMC	0.278648090397311	0.781747849229436	0.898703346520435	0.910589449245453	0.931108389467238	0.978142517891472	
+
+Accumulative Power
+FastSMC	0.26727813509913	0.647393065974722	0.745047223562128	0.783646771365684	0.81164894727716	0.890121550075723	
+
 
 
