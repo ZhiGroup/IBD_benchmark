@@ -19,3 +19,23 @@ Error insertion code could be found in  ```Error_Insertion``` directory.
 
 Evaluation software code could be found in  ```IBD_Benchmark``` directory.
 
+
+##Inputs:
+1. IBD output from an IBD detection software.
+2. VCF file that used as the input to the IBD detection software in 1.
+3. Ground truth IBD file.
+
+Details instructions could be found and configured in ```/IBD_Benchmark_ExperiencePackage/Config.txt```
+The program will read the configure file to execute.
+
+##Input Formats:
+###IBD output from an IBD decetion software
+We prebuilt 5 format pasers: FastSMC,hap-IBD,iLash,RaPID, and TPBWT. The choice of input type could be defined in ```/IBD_Benchmark_ExperiencePackage/Config.txt```.
+For other formats of IBD output you may add additional parser in the ```Loader.cs```, or you may also convert your IBD output into one of the supported format. Details of each format could be found in their GitHub page. 
+
+###Ground truth IBD format
+An example of ground truth file could be found in ```IBD_benchmark/IBD_Benchmark_ExperiencePackage/arr.gt.txt.gz```
+#individual_1_id,individual_1_haplotype_id,individual_2_id,individual_2_haplotype_id,chromosome_id,true_ibd_physical_position_start,true_ibd_physical_position_end,genetic_length
+1710,1,44,1,20,69403,352433,1.012187
+2197,0,44,1,20,69403,352433,1.012187
+947,1,59,0,20,69403,352433,1.012187
