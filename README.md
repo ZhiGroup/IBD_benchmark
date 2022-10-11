@@ -35,7 +35,7 @@ For other formats of IBD output you may add additional parser in ```Loader.cs```
 
 #### Ground truth IBD format
 An example of ground truth file could be found in ```IBD_benchmark/IBD_Benchmark_ExperiencePackage/arr.gt.txt.gz``` as:
-
+```
 #individual_1_id,individual_1_haplotype_id,individual_2_id,individual_2_haplotype_id,chromosome_id,true_ibd_physical_position_start,true_ibd_physical_position_end,genetic_length
 
 1710,1,44,1,20,69403,352433,1.012187
@@ -43,7 +43,7 @@ An example of ground truth file could be found in ```IBD_benchmark/IBD_Benchmark
 2197,0,44,1,20,69403,352433,1.012187
 
 947,1,59,0,20,69403,352433,1.012187
-
+```
 Same as the input format, you may add additional parser in ```Loader.cs```, or convert your ground truth file into this format.
 
 ## Output:
