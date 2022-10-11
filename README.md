@@ -49,10 +49,10 @@ Same as the input format, you may add additional parser in ```Loader.cs```, or c
 ## Output:
 7 evaluation results binned by cM ranges:
 
-###Each row: 
+### Each row: 
 Accuracy,Length Accuracy,Length Accuracy,Length Discepancy,Recall,Power,Accumulative Recall,and Accumulative Power.
 
-###Each column: 
+### Each column: 
 Values for each bin. The binning could be modified in the ```/IBD_Benchmark_ExperiencePackage/Config.txt``` file by adjusting starting bin, ending bin and bin length. 
 
 e.g, ```minBin=2; maxBin=7; binLen=1;``` This means the eveluation will only collect IBD length >=2cM, and the last bin will have results for all IBD that >= 7cM.
