@@ -57,6 +57,9 @@ Values for each bin. The binning could be modified in the ```/IBD_Benchmark_Expe
 
 e.g, ```minBin=2; maxBin=7; binLen=1;``` This means the eveluation will only collect IBD length >=2cM, and the last bin will have results for all IBD that >= 7cM.
 
+
+Sample output:
+
 ```
 Bin_0	Bin_1	Bin_2	Bin_3	Bin_4	Bin_5	
 
