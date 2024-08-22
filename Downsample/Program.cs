@@ -15,7 +15,7 @@ namespace DownSample
             string seq_VCF_Path = "";
             string seqVCF_statFilePath = "";
             string arrVCF_collectionList = "";
-            string seqVCF_OutputPath = "";
+            string arrVCF_OutputPath = "";
 
             int target_nSite = 17100;
             int windowSize = 5;
@@ -36,7 +36,7 @@ namespace DownSample
 
             //Step 3 will simply extract array data from the sequencing data by list of site generated from step 2.
             DownSample.Step3 sp3 = new DownSample.Step3();
-            sp3.Run(arrVCF_collectionList, seqVCF_statFilePath, seqVCF_OutputPath);
+            sp3.Run(arrVCF_collectionList, seqVCF_statFilePath, arrVCF_OutputPath);
 
 
         }
