@@ -36,7 +36,7 @@ namespace DownSample
 
             //Step 3 will simply extract array data from the sequencing data by list of site generated from step 2.
             DownSample.Step3 sp3 = new DownSample.Step3();
-            sp3.Run(arrVCF_collectionList, seqVCF_statFilePath, arrVCF_OutputPath);
+            sp3.Run(arrVCF_collectionList, seq_VCF_Path, arrVCF_OutputPath);
 
 
         }
