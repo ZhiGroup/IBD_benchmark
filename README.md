@@ -97,7 +97,7 @@ GigaScience, 2023.
 
 DOI: https://doi.org/10.1093/gigascience/giac111
 
-
+```
 @article{Tang2023IBDBenchmark,
   author  = {Tang, Kecong and Naseri, Ardalan and Wei, Yuan and Zhang, Shaojie and Zhi, Degui},
   title   = {Open-source benchmarking of IBD segment detection methods for biobank-scale cohorts},
@@ -105,4 +105,4 @@ DOI: https://doi.org/10.1093/gigascience/giac111
   year    = {2023},
   doi     = {10.1093/gigascience/giac111}
 }
-
+```
