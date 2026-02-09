@@ -89,7 +89,7 @@ ToolName	0.26727813509913	0.647393065974722	0.745047223562128	0.783646771365684	
 ### Citation
 If you use this project in your research, please cite:
 
-Kecong Tang et al.
+Kecong Tang, Ardalan Naseri, Yuan Wei, Shaojie Zhang, and Degui Zhi.
 
 Open-source benchmarking of IBD segment detection methods for biobank-scale cohorts.
 
